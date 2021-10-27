@@ -8,6 +8,7 @@ def run():
     
     h = objects.Head((10,10), radius=3)
     h.add_child((10,18))
+    h.children[0].add_child((8,18))
     s.add_entity(h)
     output.draw_frame(s, 0)
     h.translate((0,-5))

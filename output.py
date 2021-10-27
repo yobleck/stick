@@ -15,15 +15,22 @@ def draw_frame(scene, frame):
     if scene.entities:
         for e in scene.entities:
             im_draw = ImageDraw.Draw(im)
-            im_draw.ellipse(
+            im_draw.ellipse(  # entities are assumed to be Heads
                             [(e.pos[0]-e.radius, e.pos[1]-e.radius), (e.pos[0]+e.radius, e.pos[1]+e.radius)],
                             fill="black", width=e.thicc
                             )
             if e.children:
                 for c in e.children:
-                    im_draw.line([c.parent_joint.pos, c.child_joint.pos], fill="black", width=c.thicc)
+                    draw_bones(c, im_draw)
+
     im.save("/tmp/" + str(frame) + ".png")
     subprocess.Popen(["gwenview", "/tmp/" + str(frame) + ".png"])
+
+def draw_bones(bone, im_d):
+    im_d.line([bone.parent_joint.pos, bone.child_joint.pos], fill="black", width=bone.thicc)
+    if bone.children:
+        for c in bone.children:
+            draw_bones(c, im_d)
 
 
 def render_video():
