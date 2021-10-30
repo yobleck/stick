@@ -84,7 +84,7 @@ class Head(): #bone
         self.pos = coor
         self.radius = radius or 5
         self.child_joint = Joint((self.pos[0],self.pos[1]+self.radius))
-        self.thicc = thicc or 1
+        self.thicc = thicc or 1  # TODO fill or just border
         self.children = []
 
     def add_child(self, end_coor, thicc=None):
@@ -117,15 +117,16 @@ class Scene():
     def __init__(self, size, bg):
         self.size = size
         self.bg = bg
-        self.entities = []  # acts like photoshop layers
+        self.entity_layers = []  # acts like photoshop layers
 
     def add_entity(self, e):
-        self.entities.append(e)
+        self.entity_layers.append(e)
 
 
 """HELPER FUNCTIONS"""
 #https://stackoverflow.com/questions/20104611/find-new-coordinates-of-a-point-after-rotation
 #https://en.wikipedia.org/wiki/Rotation_matrix
+#https://www.mathsisfun.com/algebra/trig-cosine-law.html
 def rot_cw(pos, angle):
     return (pos[1]*math.sin(angle) + pos[0]*math.cos(angle),
             pos[1]*math.cos(angle) - pos[0]*math.sin(angle))
