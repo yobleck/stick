@@ -24,7 +24,7 @@ def draw_frame(scene, frame):
                     draw_bones(c, im_draw)
 
     im.save("/tmp/" + str(frame) + ".png")
-    subprocess.Popen(["gwenview", "/tmp/" + str(frame) + ".png"])
+    subprocess.Popen(["gwenview", "/tmp/" + str(frame) + ".png"], stderr=subprocess.DEVNULL)
 
 def draw_bones(bone, im_d):
     im_d.line([bone.parent_joint.pos, bone.child_joint.pos], fill="black", width=bone.thicc)
