@@ -5,9 +5,9 @@ import ffmpeg
 import subprocess
 import pickle
 
-
+# TODO add project name to file name or use folder as project?
 def draw_frame(scene, frame):
-    with open("/tmp/" + str(frame) + ".pkl", "wb") as f:
+    with open("/tmp/frame" + str(frame) + ".pkl", "wb") as f:
         pickle.dump(scene, f, pickle.HIGHEST_PROTOCOL)  # NOTE pickle is insecure. hashing to check integrity?
     # set canvas size to scene.size
     # set background to scene.bg color or image
@@ -26,8 +26,8 @@ def draw_frame(scene, frame):
                 for c in e.children:
                     draw_bones(c, im_draw)
 
-    im.save("/tmp/" + str(frame) + ".png")
-    subprocess.Popen(["gwenview", "/tmp/" + str(frame) + ".png"], stderr=subprocess.DEVNULL)
+    im.save("/tmp/frame" + str(frame) + ".png")
+    subprocess.Popen(["gwenview", "/tmp/frame" + str(frame) + ".png"], stderr=subprocess.DEVNULL)
 
 def draw_bones(bone, im_d):
     im_d.line([bone.parent_joint.pos, bone.child_joint.pos], fill="black", width=bone.thicc)  # draw bone
@@ -42,4 +42,8 @@ def draw_bones(bone, im_d):
 
 
 def render_video():
+    #ffmpeg -r 2 -stream_loop 5 -i %framed.png -c:v libx265 -crf 10 -pix_fmt yuv444p out.mp4
+    subprocess.Popen(['ffmpeg', '-y', '-r', '2', '-stream_loop', '5', '-i', '/tmp/frame%d.png',
+                      '-c:v', 'libx265', '-crf', '10', '-pix_fmt', 'yuv444p', '/tmp/out.mp4'],
+                    stderr=subprocess.DEVNULL)
     pass
